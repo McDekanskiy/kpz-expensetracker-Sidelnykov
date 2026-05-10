@@ -145,3 +145,53 @@ kpz-expensetracker-Sidelnykov/
 - Не дублюємо валідацію (DRY) — використовуємо middleware/validate.js
 - Не використовуємо Magic Numbers — всі константи в окремому файлі config.js
 - Не змішуємо SQL-запити з бізнес-логікою
+# ПР-7 — Аналіз та рефакторинг за принципами SOLID
+
+## 1. Таблиця знайдених проблем у наданому коді
+
+| Рядки коду | Порушення | Як виправити |
+|-----------|-----------|-------------|
+| `self.conn = sqlite3.connect('users.db')` | **DIP**: жорстка залежність від конкретної БД всередині класу | Передати з'єднання через конструктор `__init__(self, db)` |
+| `if '@' not in email` (дублюється в `register` і `update_user`) | **DRY**: валідація email повторюється в двох методах | Винести в окрему функцію `validate_email(email)` |
+| `import smtplib` + відправка email у методі `register` | **SRP**: клас відповідає за реєстрацію І за відправку пошти | Винести в окремий клас `EmailService` |
+| `with open('report.txt', 'w')` у методі `register` | **SRP**: клас відповідає за реєстрацію І за генерацію звітів | Винести в окремий клас `ReportService` |
+| `def get_all_users_and_send_report(self)` | **SRP**: один метод робить дві непов'язані речі | Розбити на `get_all()` у `UserRepository` та `generate_report()` у `ReportService` |
+
+---
+
+## 2. Структура після рефакторингу
+
+```
+src/refactored/
+└── user_manager.js      ← переписаний код
+
+Класи:
+├── validateEmail()      — DRY: єдина функція валідації
+├── validatePassword()   — DRY: єдина функція валідації
+├── UserRepository       — SRP: тільки робота з БД; DIP: db передається ззовні
+├── EmailService         — SRP: тільки відправка email
+├── ReportService        — SRP: тільки генерація звітів
+└── UserService          — SRP: координує бізнес-логіку; DIP: всі залежності ззовні
+```
+
+---
+
+## 3. Які принципи SOLID застосовані
+
+| Принцип | Де застосовано |
+|---------|---------------|
+| **SRP** | Кожен клас має одну відповідальність: UserRepository — БД, EmailService — пошта, ReportService — звіти, UserService — бізнес-логіка |
+| **OCP** | Новий тип звіту = новий метод у ReportService без зміни UserService |
+| **DIP** | UserService отримує залежності через конструктор — легко замінити на mock у тестах |
+| **DRY** | validateEmail() і validatePassword() — в одному місці, використовуються скрізь |
+
+---
+
+## 4. Як Code Smells були виправлені
+
+| Code Smell | Було | Стало |
+|-----------|------|-------|
+| **Duplicate Code** | Валідація email у 2 місцях | Функція `validateEmail()` |
+| **Magic Numbers** | `password.length < 8` | Константа `MIN_PASSWORD_LENGTH = 8` |
+| **Large Class** | 1 клас робить 4 речі | 4 окремі класи |
+| **Feature Envy** | `register()` викликає smtplib і open() | Делегує EmailService і ReportService |
