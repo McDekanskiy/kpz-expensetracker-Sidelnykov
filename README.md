@@ -9,7 +9,7 @@ Expense Tracker — це REST API для обліку особистих та к
 ## Технології
 - Мова програмування: Node.js 20
 - Фреймворк: Express.js
-- База даних: PostgreSQL
+- База даних: Sqlite3
 - ORM: Prisma
 - Автентифікація: JWT (jsonwebtoken)
 - Валідація: Zod
