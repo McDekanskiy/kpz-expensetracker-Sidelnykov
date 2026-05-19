@@ -1,0 +1,22 @@
+erDiagram
+  USER ||--o{ EXPENSE : creates
+  CATEGORY ||--o{ EXPENSE : groups
+  USER {
+    int id PK
+    string email
+    string password_hash
+    string name
+    datetime created_at
+  }
+  CATEGORY {
+    int id PK
+    string name
+  }
+  EXPENSE {
+    int id PK
+    float amount
+    string description
+    date date
+    int user_id FK
+    int category_id FK
+  }

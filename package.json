@@ -1,0 +1,36 @@
+{
+  "name": "kpz-expensetracker-sidelnykov",
+  "version": "1.2.0",
+  "description": "Expense Tracker REST API for software construction coursework",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest --coverage --verbose",
+    "test:watch": "jest --watch",
+    "lint": "node -c src/index.js"
+  },
+  "keywords": [
+    "expense-tracker",
+    "express",
+    "rest-api",
+    "swagger",
+    "kpz"
+  ],
+  "author": "Denys Sidelnikov",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}

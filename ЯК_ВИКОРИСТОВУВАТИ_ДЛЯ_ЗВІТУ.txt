@@ -1,0 +1,24 @@
+Це архів саме проєкту Expense Tracker, підготовлений для оформлення звіту.
+
+Що є в архіві:
+1. src/index.js — головний файл сервера, Swagger вже підключений.
+2. src/swagger.js — OpenAPI / Swagger документація.
+3. docs/adr/001-architecture-style.md — ADR для ПР-4.
+4. docs/report-assets/figure-3-1-layered-architecture.png — рисунок 3.1.
+5. docs/report-assets/figure-3-2-swagger-openapi.png — рисунок 3.2.
+6. docs/report-assets/figure-3-3-er-diagram.png — ER-діаграма для ПР-6.
+7. tests/ — тести Jest + Supertest для ПР-13.
+8. Dockerfile, docker-compose.yml — матеріали для ПР-14.
+9. .github/workflows/ci.yml — CI pipeline для GitHub Actions.
+
+Як запустити:
+npm install
+npm start
+
+Swagger відкривається тут:
+http://localhost:8000/api-docs
+
+Тести:
+npm test
+
+Увага: node_modules у архів не додається. Це правильно. Після розпакування треба виконати npm install.
