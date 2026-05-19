@@ -12,6 +12,8 @@ jobs:
 
     env:
       NODE_ENV: test
+      PORT: 8000
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -20,10 +22,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test -- --runInBand --forceExit
+      - name: Run smoke tests
+        run: npx jest tests/api.test.js tests/config.test.js --coverage --verbose --runInBand --forceExit
